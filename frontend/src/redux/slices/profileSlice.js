@@ -2,8 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const profileSlice = createSlice({
   name: "profile",
-  initialState: { profile: null, loading: false, error: null },
-  //initialState: { data: null, loading: false, error: null },
+  initialState: {
+     profile: null, 
+     loading: false, 
+     isProfileDeleted: false,
+     error: null 
+  },
+
   reducers: {
     profileStart(state) {
       state.loading = true;
@@ -22,34 +27,24 @@ const profileSlice = createSlice({
     updateProfile(state, action) {
         state.profile = action.payload;
     },
+    setLoading(state){
+      state.loading = true;
+    },
+    clearLoading(state){
+      state.loading = false;
+    },
+    setIsProfileDeleted(state){
+      state.isProfileDeleted = true;
+      state.loading = false;
+    },
+    clearIsProfileDeleted(state){
+      state.isProfileDeleted = false;
+    },
   },
+
 });
 
 const profileReducer = profileSlice.reducer;
 const profileActions = profileSlice.actions;
 
 export { profileActions, profileReducer };
-
-
-
-// import {createSlice} from "@reduxjs/toolkit";
-
-// const profileSlice = createSlice({
-//     name: 'profile',
-//     initialState: {
-//         profile: null,
-//     },
-//     reducers: {
-//         setProfile(state, action){
-//             state.profile = action.payload;
-//         },
-//         setProfilePhoto(state, action){
-//             state.profile.profilePhoto = action.payload;
-//         },
-//     }
-// });
-
-// const profileReducers = profileSlice.reducer;
-// const profileActions = profileSlice.actions;
-
-// export { profileReducers, profileActions};

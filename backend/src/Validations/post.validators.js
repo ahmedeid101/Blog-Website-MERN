@@ -17,15 +17,23 @@ class PostValidator {
       .messages({
         "any.only": "Invalid category selected",
       }),
+      image: Joi.object({
+        url: Joi.string().uri().required(),
+        publicId: Joi.string().required(),
+      })
    });
 
   static #updatePostSchema = Joi.object({
     title: Joi.string().min(2).max(200),
     description: Joi.string().min(10),
-     category: Joi.string().lowercase()
+    category: Joi.string().lowercase(),
     // .valid(
     //   "technology", "nature", "business", "health", "entertainment"
     // ),
+    image: Joi.object({
+      url: Joi.string().uri().required(),
+      publicId: Joi.string().required(),
+    }),
   }).min(1);
 
   // Middleware for validating post creation

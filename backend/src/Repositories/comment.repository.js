@@ -14,7 +14,7 @@ class CommentRepository {
 
     if (options.populate) {
       options.populate.forEach((field) => {
-        query = query.populate(field);
+        query = query.populate(field).populate("user", ["-password"]);
       });
     }
 
@@ -27,7 +27,7 @@ class CommentRepository {
 
     if (options.populate) {
       options.populate.forEach((field) => {
-        query = query.populate(field);
+        query = query.populate(field).populate("user", ["-password"]);
       });
     }
 

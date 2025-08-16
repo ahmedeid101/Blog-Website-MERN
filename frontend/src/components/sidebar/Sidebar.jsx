@@ -1,8 +1,16 @@
 import "./sidebar.css";
 import { Link } from "react-router-dom";
-import { categories, posts } from "../../dummyData";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchCategoies } from "../../redux/apiCalls/categoryApiCall";
 
 const Sidebar = () => {
+  const {categories} = useSelector(state => state.category);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+      dispatch(fetchCategoies());
+  }, [dispatch]);
   return (
     <div className="sidebar">
       <h5 className="sidebar-title">CATEGORIES</h5>

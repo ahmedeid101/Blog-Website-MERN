@@ -85,40 +85,23 @@ export function updateProfile(userId, newData) {
   };
 }
 
-
-// // Update Profile 
-// export function updateProfile(userId, newData) {
-//   return async (dispatch, getState) => {
-//     try {
-//       const { data } = await request.put(
-//         `/api/users/profile/${userId}`,
-//         newData,
-//         {
-//           headers: {
-//             Authorization: "Bearer " + getState().auth.user.token,
-//           }
-//         }
-//       );
-
-//       // Extract the profile photo from data.data (backend shape)
-//       const updatedProfile = data.data.profile;
-
-//       dispatch(profileActions.updateProfile(updatedProfile));
-//       dispatch(authActions.setUsername(updatedProfile));
-
-      // // Update user in local storage
-      // const user = JSON.parse(localStorage.getItem("userInfo"));
-      // user.username = updatedProfile;
-      // localStorage.setItem("userInfo", JSON.stringify(user));
-
-//       toast.success("Profile updated successfully");
-//     } catch (error) {
-//       if (Array.isArray(error.response?.data?.errors)) {
-//         error.response.data.errors.forEach((msg) => toast.error(msg));
-//       } else {
-//         toast.error(error.response?.data?.error || error.message);
-//       } 
-//       //toast.error(error.response?.data?.error || "Failed to update profile");
-//     }
-//   };
-// }
+//Delete Profile
+export const deleteProfile = (profileId) => async (dispatch, getState) => {
+  try {
+    dispatch(profileActions.setLoading());
+    const {data} = await request.delete(`/api/users/profile/${profileId}`, {
+      headers: {
+        Authorization: "Bearer " + getState().auth.user.token,
+      },
+    });
+    dispatch(profileActions.setIsProfileDeleted());
+    toast.success(data.message);
+    setTimeout(() => dispatch(profileActions.clearIsProfileDeleted()), 2000);
+  } catch (err) {
+    dispatch(
+      profileActions.profileFailure(err.response?.data?.errors || err.message)
+    );
+    toast.error(err.response?.data?.error);
+    dispatch(profileActions.clearLoading());
+  }
+};

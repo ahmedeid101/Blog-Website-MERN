@@ -1,16 +1,20 @@
 import "./update-comment-model.css";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateComment } from "../../redux/apiCalls/commentApiCall";
 
-const UpdateCommentModel = ({ setUpdateComment }) => {
-  const [text, setText] = useState("this is so great");
+const UpdateCommentModel = ({ setUpdateComment, commentForUpdate }) => {
+  const disPatch = useDispatch();
+  const [text, setText] = useState(commentForUpdate?.text);
 
   // From Submit Handler
   const formSubmitHandler = (e) => {
     e.preventDefault();
     if(text.trim() === "") return toast.error("this feild can't be empty");
 
-    console.log({text});
+    disPatch(updateComment({text}, commentForUpdate?._id));
+    setUpdateComment(false);
   };
 
   return (

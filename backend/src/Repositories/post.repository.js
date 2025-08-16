@@ -7,14 +7,22 @@ class PostRepository {
   }
 
   async findById(id) {
-    return this.model.findById(id).populate("user", "username").populate("comments");
+    return this.model.findById(id).populate("user", "username profilePhoto")
+    //.populate("comments");
+    .populate({
+      path: "comments",
+      populate: {
+        path: "user",
+        select: "username profilePhoto"
+      }
+    });
   }
 
   async findAll(filter = {}, skip = 0, limit = 0) {
   const query = this.model
     .find(filter)
     .sort({ createdAt: -1 })
-    .populate("user", ["-password"]);
+    .populate("user", ["-password"]).populate("comments");
 
   if (limit > 0) {
     query.skip(skip).limit(limit);
@@ -26,41 +34,6 @@ class PostRepository {
 async countAll(filter = {}) {
   return this.model.countDocuments(filter);
 }
-
-  // async findAll({ page = 1, limit = 3, category }) {
-  //   const query = category ? { category } : {};
-  //   const skip = (page - 1) * limit;
-
-  //   const [posts, total] = await Promise.all([
-  //     this.model.find(query)
-  //       .sort({ createdAt: -1 })
-  //       .skip(skip)
-  //       .limit(limit)
-  //       .populate('user', ['-password']),
-  //     this.model.countDocuments(query)
-  //   ]);
-
-  //   return {
-  //     posts,
-  //     total,
-  //     page,
-  //     totalPages: Math.ceil(total / limit)
-  //   };
-  // }
-
-
-  // async findAll(filter = {}, skip = 0, limit = 0) {
-  //   const query = this.model
-  //     .find(filter)
-  //     .sort({ createdAt: -1 })
-  //     .populate("user", ["-password"]);
-
-  //   if (limit > 0) {
-  //     query.skip(skip).limit(limit);
-  //   }
-
-  //   return query;
-  // }
 
   async findByTitleAndUser(title, userId) {
     return this.model.findOne({ title, user: userId });

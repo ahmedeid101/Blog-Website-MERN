@@ -44,7 +44,7 @@ const UsersTable = () => {
                 <td>{item}</td>
                 <td>
                   <div className="table-image">
-                    <img src="/images/user-avatar.png" alt="User Image" className="table-user-image" />
+                    <img src="/images/user-avatar.png" alt="" className="table-user-image" />
                     <span className="table-username">Ahmed Eid</span>
                   </div>
                 </td>

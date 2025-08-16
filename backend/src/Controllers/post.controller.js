@@ -3,8 +3,9 @@ const cloudinary = require("../config/cloudinaryConfig");
 const { date } = require("joi");
 
 class PostController {
-  constructor(postService) {
+  constructor(postService, commentService) {
     this.postService = postService;
+    this.commentService = commentService;
   }
 
   createPost = asyncHandler(async (req, res) => {
@@ -49,28 +50,6 @@ class PostController {
   });
 });
 
-  // getAllPosts = asyncHandler(async (req, res) => {
-  //   const { pageNumber, category } = req.query;
-
-  //   const posts = await this.postService.getAllPosts({
-  //     page: Number(pageNumber) || 1,
-  //     limit: 3,
-  //     category
-  //   });
-
-  //   res.status(200).json({success: true, data: posts});
-  // });
-
-
-  // getAllPosts = asyncHandler(async (req, res) => {
-  //   const posts = await this.postService.getAllPosts(req.query);
-  //   res.status(200).json({
-  //     success: true,
-  //     count: posts.length,
-  //     data: posts,
-  //   });
-  // });
-
   updatePost = asyncHandler(async (req, res) => {
     // 1. Call service to update the post
     const updatedPost = await this.postService.updatePost(
@@ -103,7 +82,8 @@ class PostController {
     // 2. Update post image via service
     updatedPost = await this.postService.updatePostImage(
       req.params.id,
-      req.user
+      req.user,
+      updatedPost.image
     );
 
     // 3. Return updated post
@@ -111,6 +91,7 @@ class PostController {
   });
 
   deletePost = asyncHandler(async (req, res) => {
+    try {
     // 1. Get post and delete image if exists
     const post = await this.postService.getPostById(req.params.id);
     if (post.image?.publicId){
@@ -124,7 +105,11 @@ class PostController {
     await this.commentService.deleteCommentsByPostId(req.params.id);
 
     // 4. Respond
-    res.status(200).json({ success: true, data: "Post and related comments deleted successfully" });
+    res.status(200).json({ message: "Post and related comments deleted successfully", postId: post._id });
+      
+    } catch (error) {
+      res.status(400).json({ success: false, error: error.message });
+    }
   });
 
   toggleLikePost = asyncHandler(async (req, res) => {

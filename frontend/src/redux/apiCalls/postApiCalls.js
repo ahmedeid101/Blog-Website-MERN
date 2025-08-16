@@ -16,6 +16,20 @@ export const fetchPosts = (pageNumber) => async (dispatch) => {
   }
 };
 
+//fetch posts pased on page number
+export const fetchPost = (postId) => async (dispatch) => {
+  dispatch(postActions.getPostsStart());
+  try {
+    const res = await request.get(`/api/posts/${postId}`);
+    dispatch(postActions.setPost(res.data.data));
+  } catch (err) {
+    dispatch(
+      postActions.getPostsFailure(err.response?.data?.errors || err.message)
+    );
+    toast.error(err.response.data.error);
+  }
+};
+
 //get posts count
 export const getPostsCount = () => async (dispatch) => {
   dispatch(postActions.getPostsStart());
@@ -41,5 +55,100 @@ export const fetchPostsCategory = (category) => async (dispatch) => {
       postActions.getPostsFailure(err.response?.data?.errors || err.message)
     );
     toast.error(err.response.data.error);
+  }
+};
+
+//Create Post
+export const createPost = (newPost) => async (dispatch, getState) => {
+  dispatch(postActions.getPostsStart());
+  try {
+    dispatch(postActions.setLoading());
+    await request.post(`/api/posts`, newPost, {
+      headers: {
+        Authorization: "Bearer " + getState().auth.user.token,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    dispatch(postActions.setCreatingPost());
+    setTimeout(() => dispatch(postActions.clearCreatingPost()), 2000); //after 2s
+  } catch (err) {
+    dispatch(
+      postActions.getPostsFailure(err.response?.data?.errors || err.message)
+    );
+    toast.error(err.response.data.error);
+    dispatch(postActions.clearLoading());
+  }
+};
+
+//Toggle Like
+export const toggleLike = (userId) => async (dispatch, getState) => {
+  dispatch(postActions.getPostsStart());
+  try {
+    const {data} = await request.put(`/api/posts/like/${userId}`, {}, {
+      headers: {
+        Authorization: "Bearer " + getState().auth.user.token,
+      },
+    });
+    dispatch(postActions.setLikes(data.data));
+  } catch (err) {
+    dispatch(
+      postActions.getPostsFailure(err.response?.data?.errors || err.message)
+    );
+    toast.error(err.response.data.error);
+  }
+};
+
+//Update Post Image
+export const updatePostImage = (newImage, userId) => async (dispatch, getState) => {
+  dispatch(postActions.getPostsStart());
+  try {
+    await request.put(`/api/posts/upload-image/${userId}`, newImage, {
+      headers: {
+        Authorization: "Bearer " + getState().auth.user.token,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    toast.success("New Post Image Uploaded Successfully");
+  } catch (err) {
+    dispatch(
+      postActions.getPostsFailure(err.response?.data?.errors || err.message)
+    );
+    toast.error(err.response.data.error);
+  }
+};
+
+//Update Post
+export const updatePost = (newPost, userId) => async (dispatch, getState) => {
+  dispatch(postActions.getPostsStart());
+  try {
+    const {data} = await request.put(`/api/posts/${userId}`, newPost, {
+      headers: {
+        Authorization: "Bearer " + getState().auth.user.token,
+      },
+    });
+    dispatch(postActions.setPost(data.data));
+  } catch (err) {
+    dispatch(
+      postActions.getPostsFailure(err.response?.data?.errors || err.message)
+    );
+    toast.error(err.response.data.error);
+  }
+};
+//Delete Post
+export const deletePost = (postId) => async (dispatch, getState) => {
+  dispatch(postActions.getPostsStart());
+  try {
+    const {data} = await request.delete(`/api/posts/${postId}`, {
+      headers: {
+        Authorization: "Bearer " + getState().auth.user.token,
+      },
+    });
+    dispatch(postActions.deletePost(data.postId));
+    toast.success(data.message);
+  } catch (err) {
+    dispatch(
+      postActions.getPostsFailure(err.response?.data?.errors || err.message)
+    );
+    toast.error(err.response?.data?.error);
   }
 };

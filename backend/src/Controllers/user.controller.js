@@ -55,11 +55,12 @@ class UserController {
 
       if (!req.file) throw new ErrorResponse('No file uploaded or Multer failed to process it', 401);
 
-      // Delete old photo if exists
       const user = await this.userService.getProfile(req.user.id,);
-      // if (!user) {
-      // throw new ErrorResponse('User not found', 404);
-      // }
+      if (!user) {
+        throw new ErrorResponse('User not found', 404);
+      }
+
+      // Delete old photo if exists
       if (user.profilePhoto?.publicId) {
         await this.userService.deleteProfilePhoto(user.profilePhoto.publicId);
       }
@@ -101,9 +102,14 @@ class UserController {
       if (!user) {
         res.status(404).json({message: 'user not found'})
       }
+
     //delete photo
-    await this.userService.deleteProfilePhoto(user.profilePhoto.publicId);
+    if(user.profilePhoto?.publicId !== null){
+      await this.userService.deleteProfilePhoto(user.profilePhoto.publicId);
+    }
+
     await this.userService.deleteProfile(req.params.id);
+    
     res.status(201).json({
       success: true,
       message: "Admin Delete User Successfully",

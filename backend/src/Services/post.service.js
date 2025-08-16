@@ -22,7 +22,7 @@ class PostService {
     return this.postRepository.create(postData);
   }
 
-  async getPostById(id, user) {
+  async getPostById(id) {
     const post = await this.postRepository.findById(id);
     if (!post) throw new ErrorResponse("Post not found", 404);
     return post;
@@ -47,19 +47,6 @@ class PostService {
     currentPage: Number(page),
   };
 }
-  //   async getAllPosts(params) {
-  //   return await this.postRepository.findAll(params);
-  // }
-
-  // async getAllPosts(query) {
-  //   const { category, page = 1 } = query;
-  //   const POST_PER_PAGE = 3;
-  //   const skip = (page - 1) * POST_PER_PAGE;
-
-  //   const filter = {};
-  //   if (category) filter.category = category;
-  //   return this.postRepository.findAll(filter, skip, POST_PER_PAGE);
-  // }
 
   async countPosts(filter = {}) {
     return this.postRepository.countAll(filter);

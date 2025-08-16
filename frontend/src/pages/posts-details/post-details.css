@@ -97,6 +97,12 @@
     cursor: pointer;
 }
 
+.unlogin-comment{
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--gray-color);
+}
+
 /* Media Query */
 @media (max-width: 820px) {
     .post-details {

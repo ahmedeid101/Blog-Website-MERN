@@ -9,9 +9,12 @@ const commentSlice = createSlice({
       setComments(state,action) {
         state.comments = action.payload;
       },
+<<<<<<< HEAD
       deleteComment(state,action) {
          state.comments = state.comments.filter(c => c._id !== action.payload);
       },
+=======
+>>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
 
    }
 });

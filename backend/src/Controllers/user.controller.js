@@ -121,7 +121,11 @@ class UserController {
       const count = await this.userService.getTotalUsers(req.query.role);
       res.status(200).json({
         success: true,
+<<<<<<< HEAD
         data: count
+=======
+        count
+>>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
       });
     } catch (error) {
       res.status(500).json({

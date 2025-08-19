@@ -18,7 +18,11 @@ class UserRepository {
         userId,
         updateData,
         {new: true, runValidators: true}
+<<<<<<< HEAD
     ).select('-password').populate("posts");
+=======
+    ).select('-password');
+>>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
   }
 
   async deleteById(id) {

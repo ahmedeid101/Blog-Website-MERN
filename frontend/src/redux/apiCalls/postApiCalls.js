@@ -32,9 +32,16 @@ export const fetchPost = (postId) => async (dispatch) => {
 
 //get posts count
 export const getPostsCount = () => async (dispatch) => {
+<<<<<<< HEAD
   try {
     const {data} = await request.get(`/api/posts/count`);
     dispatch(postActions.setPostsCount(data.data));
+=======
+  dispatch(postActions.getPostsStart());
+  try {
+    const res = await request.get(`/api/posts/count`);
+    dispatch(postActions.setPostsCount(res.data.data));
+>>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
   } catch (err) {
     dispatch(
       postActions.getPostsFailure(err.response?.data?.errors || err.message)
@@ -151,6 +158,7 @@ export const deletePost = (postId) => async (dispatch, getState) => {
     toast.error(err.response?.data?.error);
   }
 };
+<<<<<<< HEAD
 
 // Get All Posts
 export function getAllPosts() {
@@ -163,3 +171,5 @@ export function getAllPosts() {
     }
   };
 }
+=======
+>>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980

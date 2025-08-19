@@ -4,7 +4,11 @@
 
 .profile-loader{
     min-height: calc(100vh - 130px);
+<<<<<<< HEAD
     width: 100%;
+=======
+    width: 100px;
+>>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
     display: flex;
     align-items: center;
     justify-content: center;

@@ -25,8 +25,11 @@ class RegisterValidator {
       "string.min": "Password must be at least 8 characters",
       "string.empty": "Password is required",
     }),
+<<<<<<< HEAD
     isAdmin: Joi.boolean().default(false),
     role: Joi.string().valid("admin", "user").default("user"), 
+=======
+>>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
   });
 
   // Middleware for validating register

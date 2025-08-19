@@ -1,7 +1,10 @@
 import { postActions } from "../slices/postSlice";
 import request from "../../utils/request";
 import { toast } from "react-toastify";
+<<<<<<< HEAD
 import { commentActions } from "../slices/commentSlice";
+=======
+>>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
 
 // Create New Comment
 export function createComment(newComment) {
@@ -52,7 +55,10 @@ export function deleteComment(commentId) {
                 Authorization: "Bearer " + getState().auth.user.token,
             },
         });
+<<<<<<< HEAD
         dispatch(commentActions.deleteComment(commentId));
+=======
+>>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
         dispatch(postActions.deleteCommentFromPost(commentId));
       } catch (error) {
         if (Array.isArray(error.response?.data?.errors)) {
@@ -62,6 +68,7 @@ export function deleteComment(commentId) {
       }   
      }
   }
+<<<<<<< HEAD
 }
 
 // Fetch All Comments
@@ -78,4 +85,6 @@ export function fetchAllComments() {
       toast.error(error.response.data.error);
     }
   };
+=======
+>>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
 }

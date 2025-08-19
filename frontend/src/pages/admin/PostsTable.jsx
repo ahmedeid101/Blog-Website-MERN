@@ -1,5 +1,6 @@
 import "./admin-table.css";
 import AdminSidebar from "./AdminSidebar";
+<<<<<<< HEAD
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,6 +28,28 @@ const PostsTable = () => {
     }).then((willDelete) => {
       if (willDelete) {
         dispatch(deletePost(postId))
+=======
+import { posts } from "../../dummyData";
+import { Link } from "react-router-dom";
+import swal from "sweetalert";
+
+const PostsTable = () => {
+   // Delete Post Handler
+   const deletePostHandler = () => {
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this post!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        swal("Post has been deleted!", {
+          icon: "success",
+        });
+      } else {
+        swal("Something went wrong!");
+>>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
       }
     });
   };
@@ -52,7 +75,11 @@ const PostsTable = () => {
                 <td>
                   <div className="table-image">
                     <img
+<<<<<<< HEAD
                       src={item.uer?.profilePhoto?.url || "/images/user-avatar.png"}
+=======
+                      src="/images/user-avatar.png"
+>>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
                       alt=""
                       className="table-user-image"
                     />
@@ -67,7 +94,11 @@ const PostsTable = () => {
                     <button>
                       <Link to={`/posts/details/${item._id}`}>View Post</Link>
                     </button>
+<<<<<<< HEAD
                     <button onClick={() => deletePostHandler(item._id)}>Delete Post</button>
+=======
+                    <button onClick={deletePostHandler}>Delete Post</button>
+>>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
                   </div>
                 </td>
               </tr>

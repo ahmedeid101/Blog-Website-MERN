@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useDispatch, useSelector } from "react-redux";
 import "./admin-table.css";
 import AdminSidebar from "./AdminSidebar";
@@ -26,6 +27,28 @@ const CommentsTable = () => {
     }).then((willDelete) => {
       if (willDelete) {
         dispatch(deleteComment(commentId))
+=======
+import "./admin-table.css";
+import AdminSidebar from "./AdminSidebar";
+import swal from "sweetalert";
+
+const CommentsTable = () => {
+  // Delete Comment Handler
+  const deleteCommentHandler = () => {
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this comment!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        swal("Comment has been deleted!", {
+          icon: "success",
+        });
+      } else {
+        swal("Something went wrong!");
+>>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
       }
     });
   };
@@ -45,6 +68,7 @@ const CommentsTable = () => {
             </tr>
           </thead>
           <tbody>
+<<<<<<< HEAD
             {comments.map((item, index) => (
               <tr key={item._id}>
                 <td>{index+1}</td>
@@ -64,6 +88,27 @@ const CommentsTable = () => {
                 <td>
                   <div className="table-button-group">
                     <button onClick={() => deleteCommentHandler(item._id)}>
+=======
+            {[1, 2, 3].map((item) => (
+              <tr key={item}>
+                <td>{item}</td>
+                <td>
+                  <div className="table-image">
+                    <img
+                      src="/images/user-avatar.png"
+                      alt=""
+                      className="table-user-image"
+                    />
+                    <span className="table-username">Ahmed Eid</span>
+                  </div>
+                </td>
+                <td>
+                  <b>thank you for this post</b>
+                </td>
+                <td>
+                  <div className="table-button-group">
+                    <button onClick={deleteCommentHandler}>
+>>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
                       Delete Comment
                     </button>
                   </div>

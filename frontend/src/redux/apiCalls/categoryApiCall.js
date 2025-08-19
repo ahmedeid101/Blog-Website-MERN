@@ -16,6 +16,7 @@ export function fetchCategoies() {
       }   
      }
   }
+<<<<<<< HEAD
 }
 
 // Create Category
@@ -54,4 +55,6 @@ export function deleteCategory(categoryId) {
       toast.error(error.response.data.error); 
     }
   };
+=======
+>>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
 }

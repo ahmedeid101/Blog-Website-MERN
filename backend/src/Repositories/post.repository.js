@@ -6,6 +6,24 @@ class PostRepository {
     return this.model.create(postData);
   }
 
+    async findAll() {
+    return this.model.find().sort({ createdAt: -1 }).populate("user", ["-password"]).populate("comments");
+  }
+
+    async findByCategory(category) {
+    return this.model.find({ category })
+      .sort({ createdAt: -1 })
+      .populate("user", ["-password"]);
+  }
+
+  async findPaginated(page, limit) {
+    return this.model.find()
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .sort({ createdAt: -1 })
+      .populate("user", ["-password"]);
+  }
+
   async findById(id) {
     return this.model.findById(id).populate("user", "username profilePhoto")
     //.populate("comments");
@@ -18,18 +36,18 @@ class PostRepository {
     });
   }
 
-  async findAll(filter = {}, skip = 0, limit = 0) {
-  const query = this.model
-    .find(filter)
-    .sort({ createdAt: -1 })
-    .populate("user", ["-password"]).populate("comments");
+//   async findAll(filter = {}, skip = 0, limit = 0) {
+//   const query = this.model
+//     .find(filter)
+//     .sort({ createdAt: -1 })
+//     .populate("user", ["-password"]).populate("comments");
 
-  if (limit > 0) {
-    query.skip(skip).limit(limit);
-  }
+//   if (limit > 0) {
+//     query.skip(skip).limit(limit);
+//   }
 
-  return query;
-}
+//   return query;
+// }
 
 async countAll(filter = {}) {
   return this.model.countDocuments(filter);

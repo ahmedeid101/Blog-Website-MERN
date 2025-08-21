@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useDispatch, useSelector } from "react-redux";
 import "./admin-table.css";
 import AdminSidebar from "./AdminSidebar";
@@ -26,29 +25,7 @@ const CategoriesTable = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((willDelete) => {
       if (willDelete) {
-        dispatch(deleteCategory(categoryId));
-=======
-import "./admin-table.css";
-import AdminSidebar from "./AdminSidebar";
-import swal from "sweetalert";
-
-const CategoriesTable = () => {
-  // Delete Category Handler
-  const deleteCategoryHandler = () => {
-    swal({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this category!",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        swal("Category has been deleted!", {
-          icon: "success",
-        });
-      } else {
-        swal("Something went wrong!");
->>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
+        dispatch(deleteCategory(categoryId))
       }
     });
   };
@@ -67,27 +44,15 @@ const CategoriesTable = () => {
             </tr>
           </thead>
           <tbody>
-<<<<<<< HEAD
             {categories.map((item, index) => (
               <tr key={item._id}>
-                <td>{index + 1}</td>
+                <td>{index+1}</td>
                 <td>
                   {item.title}
                 </td>
                 <td>
                   <div className="table-button-group">
                     <button onClick={() => deleteCategoryHandler(item._id)}>
-=======
-            {[1, 2, 3].map((item) => (
-              <tr key={item}>
-                <td>{item}</td>
-                <td>
-                  <b>music</b>
-                </td>
-                <td>
-                  <div className="table-button-group">
-                    <button onClick={deleteCategoryHandler}>
->>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
                       Delete Category
                     </button>
                   </div>

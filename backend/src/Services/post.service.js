@@ -28,25 +28,38 @@ class PostService {
     return post;
   }
 
-  async getAllPosts(query) {
-  const { category, page = 1, limit = 3 } = query;
-  const skip = (page - 1) * limit;
+  async getAllPosts({ pageNumber, category }) {
+    const POST_PER_PAGE = 3;
 
-  const filter = {};
-  if (category) filter.category = category;
+    if (pageNumber) {
+      return this.postRepository.findPaginated(pageNumber, POST_PER_PAGE);
+    } else if (category) {
+      return this.postRepository.findByCategory(category);
+    } else {
+      return this.postRepository.findAll(); //returns ALL without limit
+    }
+  }
 
-  const [posts, totalPosts] = await Promise.all([
-    this.postRepository.findAll(filter, skip, limit),
-    this.postRepository.countAll(filter),
-  ]);
 
-  return {
-    posts,
-    totalPosts,
-    totalPages: Math.ceil(totalPosts / limit),
-    currentPage: Number(page),
-  };
-}
+//   async getAllPosts(query) {
+//   const { category, page = 1, limit = 3 } = query;
+//   const skip = (page - 1) * limit;
+
+//   const filter = {};
+//   if (category) filter.category = category;
+
+//   const [posts, totalPosts] = await Promise.all([
+//     this.postRepository.findAll(filter, skip, limit),
+//     this.postRepository.countAll(filter),
+//   ]);
+
+//   return {
+//     posts,
+//     totalPosts,
+//     totalPages: Math.ceil(totalPosts / limit),
+//     currentPage: Number(page),
+//   };
+// }
 
   async countPosts(filter = {}) {
     return this.postRepository.countAll(filter);

@@ -52,11 +52,6 @@ export function uploadProfilePhoto(newPhoto) {
 export function updateProfile(userId, newData) {
   return async (dispatch, getState) => {
     try {
-<<<<<<< HEAD
-=======
-      dispatch(profileActions.profileStart());
-
->>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
       const { data } = await request.put(
         `/api/users/profile/${userId}`,
         newData,
@@ -81,11 +76,7 @@ export function updateProfile(userId, newData) {
       toast.success("Profile updated successfully");
     } catch (error) {
       const message =
-<<<<<<< HEAD
       error.response?.data?.error || error.message || "Failed to update profile";
-=======
-        error.response?.data?.error || error.message || "Failed to update profile";
->>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
       dispatch(profileActions.profileFailure(message));
       toast.error(message);
     }
@@ -102,11 +93,7 @@ export const deleteProfile = (profileId) => async (dispatch, getState) => {
       },
     });
     dispatch(profileActions.setIsProfileDeleted());
-<<<<<<< HEAD
     toast.success(data?.message);
-=======
-    toast.success(data.message);
->>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
     setTimeout(() => dispatch(profileActions.clearIsProfileDeleted()), 2000);
   } catch (err) {
     dispatch(
@@ -116,7 +103,6 @@ export const deleteProfile = (profileId) => async (dispatch, getState) => {
     dispatch(profileActions.clearLoading());
   }
 };
-<<<<<<< HEAD
 
 // Get Users Count (for admin dashboard)
 export function getUsersCount() {
@@ -158,5 +144,3 @@ export function getAllUsersProfile() {
   };
 }
 
-=======
->>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980

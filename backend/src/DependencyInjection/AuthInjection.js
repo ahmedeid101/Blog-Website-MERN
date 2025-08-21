@@ -17,5 +17,6 @@ const authController = new AuthController(authService);
 
 module.exports = {
   register: authController.register,
-  login: authController.login
+  login: authController.login,
+  verifyEmail: authController.verifyEmail,
 };

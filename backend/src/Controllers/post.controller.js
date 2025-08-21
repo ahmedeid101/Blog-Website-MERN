@@ -1,6 +1,5 @@
 const asyncHandler = require("express-async-handler");
 const cloudinary = require("../config/cloudinaryConfig");
-const { date } = require("joi");
 
 class PostController {
   constructor(postService, commentService) {
@@ -31,24 +30,35 @@ class PostController {
     res.status(200).json({ success: true, data: post });
   });
 
-    getPostsCount = asyncHandler(async (req, res) => {
+  getPostsCount = asyncHandler(async (req, res) => {
     const count = await this.postService.countPosts();
     res.status(200).json({ success: true, data: count });
   });
 
   getAllPosts = asyncHandler(async (req, res) => {
-  const { posts, totalPosts, totalPages, currentPage } =
-    await this.postService.getAllPosts(req.query);
+  const { page: pageNumber, category } = req.query;
 
-  res.status(200).json({
-    success: true,
-    count: posts.length,
-    totalPosts,
-    totalPages,
-    currentPage,
-    data: posts,
+  const posts = await this.postService.getAllPosts({
+    pageNumber,
+    category,
   });
+
+  res.status(200).json({success: true, data:posts});
 });
+
+  // getAllPosts = asyncHandler(async (req, res) => {
+  //   const { posts, totalPosts, totalPages, currentPage } =
+  //     await this.postService.getAllPosts(req.query);
+
+  //   res.status(200).json({
+  //     success: true,
+  //     count: posts.length,
+  //     totalPosts,
+  //     totalPages,
+  //     currentPage,
+  //     data: posts,
+  //   });
+  // });
 
   updatePost = asyncHandler(async (req, res) => {
     // 1. Call service to update the post
@@ -92,21 +102,21 @@ class PostController {
 
   deletePost = asyncHandler(async (req, res) => {
     try {
-    // 1. Get post and delete image if exists
-    const post = await this.postService.getPostById(req.params.id);
-    if (post.image?.publicId){
-      await cloudinary.uploader.destroy(post.image.publicId);
-    }
-    
-    // 2. Delete the post (includes authorization check)
-    await this.postService.deletePost(req.params.id, req.user);
+      // 1. Get post and delete image if exists
+      const post = await this.postService.getPostById(req.params.id);
+      if (post.image?.publicId) {
+        await cloudinary.uploader.destroy(post.image.publicId);
+      }
 
-    // 3. Delete all related comments
-    await this.commentService.deleteCommentsByPostId(req.params.id);
+      // 2. Delete the post (includes authorization check)
+      await this.postService.deletePost(req.params.id, req.user);
 
-    // 4. Respond
-    res.status(200).json({ message: "Post and related comments deleted successfully", postId: post._id });
-      
+      // 3. Delete all related comments
+      await this.commentService.deleteCommentsByPostId(req.params.id);
+
+      // 4. Respond
+      res.status(200).json({ message: "Post and related comments deleted successfully", postId: post._id });
+
     } catch (error) {
       res.status(400).json({ success: false, error: error.message });
     }

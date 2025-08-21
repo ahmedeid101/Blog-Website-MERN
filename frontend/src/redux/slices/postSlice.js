@@ -2,11 +2,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const postsSlice = createSlice({
-  name: 'posts',
+  name: 'post',
   initialState: {
     posts: [],
     post: null,
-    postCount: null,
+    postsCount: null,
     postCategory: [],
     isPostCreated: false,
     loading: false,
@@ -27,7 +27,7 @@ const postsSlice = createSlice({
       state.post.likes = action.payload.likes;
     },
     setPostsCount(state, action) {
-      state.postCount = action.payload;
+      state.postsCount = action.payload;
     },
     setPostsCategory(state, action) {
       state.postCategory = action.payload;

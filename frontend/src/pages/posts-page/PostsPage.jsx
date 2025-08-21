@@ -9,10 +9,10 @@ import { fetchPosts, getPostsCount } from '../../redux/apiCalls/postApiCalls';
 const POST_PRE_PAGE = 3;
 
 const PostsPage = () => {
-  const {postCount, posts} = useSelector(state => state.post);
+  const {postsCount, posts} = useSelector(state => state.post);
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
-  const pages = Math.ceil(postCount / POST_PRE_PAGE);
+  const pages = Math.ceil(postsCount / POST_PRE_PAGE);
 
   useEffect(() => {
     dispatch(fetchPosts(currentPage))

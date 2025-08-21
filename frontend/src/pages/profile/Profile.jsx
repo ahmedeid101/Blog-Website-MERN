@@ -131,11 +131,7 @@ const Profile = () => {
       </div>
       <div className="profile-posts-list">
         <h2 className="profile-posts-list-title">{profile?.username} Posts</h2>
-<<<<<<< HEAD
         {profile?.posts?.map((post) => (
-=======
-        {profile?.posts.map((post) => (
->>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
           <PostItem
             key={post._id}
             post={post}

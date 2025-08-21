@@ -30,13 +30,8 @@ class CategoryController {
   });
 
   deleteCategory = asyncHandler(async (req, res) => {
-<<<<<<< HEAD
     const category = await this.categoryService.deleteCategory(req.params.id);
     res.status(200).json({ categoryId: category._id, message: "Category deleted successfully" });
-=======
-    await this.categoryService.deleteCategory(req.params.id);
-    res.status(200).json({ success: true, message: "Category deleted successfully" });
->>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
   });
 }
 

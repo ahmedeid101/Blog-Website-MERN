@@ -16,7 +16,6 @@ export function fetchCategoies() {
       }   
      }
   }
-<<<<<<< HEAD
 }
 
 // Create Category
@@ -31,11 +30,7 @@ export function createCategory(newCategory) {
       dispatch(categoryActions.addCategory(data.data));
       toast.success("category created successfully");
     } catch (error) {
-      if (Array.isArray(error.response?.data?.errors)) {
-        error.response.data.errors.forEach((msg) => toast.error(msg));
-      } else {
-        toast.error(error.response?.data?.error || error.message);
-      } 
+      toast.error(error.response.data.error);  
     }
   };
 }
@@ -49,12 +44,10 @@ export function deleteCategory(categoryId) {
           Authorization: "Bearer " + getState().auth.user.token,
         }
       });
-      dispatch(categoryActions.addCategory(data.categoryId));
+      dispatch(categoryActions.deleteCategory(data.categoryId));
       toast.success(data.message);
     } catch (error) {
       toast.error(error.response.data.error); 
     }
   };
-=======
->>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
 }

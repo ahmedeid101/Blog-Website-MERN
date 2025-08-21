@@ -4,14 +4,36 @@ class AuthController {
   constructor(authService) {
     this.authService = authService;
   }
-  register = asyncHandler(async (req, res) => {
+
+  // register = asyncHandler(async (req, res) => {
+  //   try {
+  //     const user = await this.authService.register(req.body);
+  //     res
+  //       .status(201)
+  //       .json({ message: "User Regiesterd Successfully", User: user });
+  //   } catch (error) {
+  //     res.status(400).json({ error: error.message });
+  //   }
+  // });
+
+  register = asyncHandler(async(req, res) => {
     try {
-      const user = await this.authService.register(req.body);
-      res
-        .status(201)
-        .json({ message: "User Regiesterd Successfully", User: user });
-    } catch (error) {
-      res.status(400).json({ error: error.message });
+      const user = await this.userService.registerUser(req.body);
+      res.status(201).json({
+        message: "User registered. Please check your email to verify.",
+        User: user
+      });
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  });
+
+  verifyEmail = asyncHandler(async(req, res) => {
+    try {
+      const user = await this.userService.verifyEmail(req.params.token);
+      res.json({ message: "Email verified successfully", user });
+    } catch (err) {
+      res.status(400).json({ error: err.message });
     }
   });
 
@@ -38,6 +60,7 @@ class AuthController {
       res.status(401).json({ isValid: false, error: error.message });
     }
   });
+
 }
 
 module.exports = AuthController;

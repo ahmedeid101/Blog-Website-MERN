@@ -4,10 +4,9 @@ import { toast } from "react-toastify";
 
 //fetch posts pased on page number
 export const fetchPosts = (pageNumber) => async (dispatch) => {
-  dispatch(postActions.getPostsStart());
   try {
-    const res = await request.get(`/api/posts?page=${pageNumber}`);
-    dispatch(postActions.setPosts(res.data.data)); // backend should return { data: [...] }
+    const {data} = await request.get(`/api/posts?page=${pageNumber}`);
+    dispatch(postActions.setPosts(data.data)); // backend should return { data: [...] }
   } catch (err) {
     dispatch(
       postActions.getPostsFailure(err.response?.data?.errors || err.message)
@@ -16,9 +15,8 @@ export const fetchPosts = (pageNumber) => async (dispatch) => {
   }
 };
 
-//fetch posts pased on page number
+//fetch posts By Post Id
 export const fetchPost = (postId) => async (dispatch) => {
-  dispatch(postActions.getPostsStart());
   try {
     const res = await request.get(`/api/posts/${postId}`);
     dispatch(postActions.setPost(res.data.data));
@@ -32,16 +30,9 @@ export const fetchPost = (postId) => async (dispatch) => {
 
 //get posts count
 export const getPostsCount = () => async (dispatch) => {
-<<<<<<< HEAD
   try {
     const {data} = await request.get(`/api/posts/count`);
     dispatch(postActions.setPostsCount(data.data));
-=======
-  dispatch(postActions.getPostsStart());
-  try {
-    const res = await request.get(`/api/posts/count`);
-    dispatch(postActions.setPostsCount(res.data.data));
->>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980
   } catch (err) {
     dispatch(
       postActions.getPostsFailure(err.response?.data?.errors || err.message)
@@ -52,10 +43,9 @@ export const getPostsCount = () => async (dispatch) => {
 
 //fetch posts pased on category
 export const fetchPostsCategory = (category) => async (dispatch) => {
-  dispatch(postActions.getPostsStart());
   try {
-    const res = await request.get(`/api/posts?category=${category}`);
-    dispatch(postActions.setPostsCategory(res.data.data));
+    const {data} = await request.get(`/api/posts?category=${category}`);
+    dispatch(postActions.setPostsCategory(data.data));
   } catch (err) {
     dispatch(
       postActions.getPostsFailure(err.response?.data?.errors || err.message)
@@ -66,7 +56,6 @@ export const fetchPostsCategory = (category) => async (dispatch) => {
 
 //Create Post
 export const createPost = (newPost) => async (dispatch, getState) => {
-  dispatch(postActions.getPostsStart());
   try {
     dispatch(postActions.setLoading());
     await request.post(`/api/posts`, newPost, {
@@ -77,11 +66,16 @@ export const createPost = (newPost) => async (dispatch, getState) => {
     });
     dispatch(postActions.setCreatingPost());
     setTimeout(() => dispatch(postActions.clearCreatingPost()), 2000); //after 2s
-  } catch (err) {
+  } catch (error) {
     dispatch(
-      postActions.getPostsFailure(err.response?.data?.errors || err.message)
+      postActions.getPostsFailure(error.response?.data?.errors || error.message)
     );
-    toast.error(err.response.data.error);
+
+    if (Array.isArray(error.response?.data?.errors)) {
+        error.response.data.errors.forEach((msg) => toast.error(msg));
+      } else {
+        toast.error(error.response?.data?.error || "Something went wrong");
+      }
     dispatch(postActions.clearLoading());
   }
 };
@@ -158,9 +152,8 @@ export const deletePost = (postId) => async (dispatch, getState) => {
     toast.error(err.response?.data?.error);
   }
 };
-<<<<<<< HEAD
 
-// Get All Posts
+// Get All Posts(for admin)
 export function getAllPosts() {
   return async (dispatch) => {
     try {
@@ -171,5 +164,3 @@ export function getAllPosts() {
     }
   };
 }
-=======
->>>>>>> 02ee4c8648a884a8a762606d5a950c7b57c4a980

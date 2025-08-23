@@ -32,11 +32,6 @@ const CommentList = ({ comments }) => {
     }).then((isOk) => {
       if (isOk) {
         dispatch(deleteComment(commentId))
-        // Swal.fire({
-        //   title: "Deleted!",
-        //   text: "Your comment has been deleted.",
-        //   icon: "success",
-        // });
       }
     });
   };

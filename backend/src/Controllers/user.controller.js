@@ -108,7 +108,7 @@ class UserController {
       await this.userService.deleteProfilePhoto(user.profilePhoto.publicId);
     }
 
-    await this.userService.deleteProfile(req.params.id);
+    await this.userService.deleteUserProfile(req.params.id);
     
     res.status(201).json({
       success: true,

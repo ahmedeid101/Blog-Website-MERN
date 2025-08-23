@@ -18,10 +18,15 @@ class AuthController {
 
   register = asyncHandler(async(req, res) => {
     try {
-      const user = await this.userService.registerUser(req.body);
+      const {user, token} = await this.authService.register(req.body);
       res.status(201).json({
         message: "User registered. Please check your email to verify.",
-        User: user
+        user: {
+          id: user._id,
+          email: user.email,
+          username: user.username,
+          isVerified: user.isVerified
+        }
       });
     } catch (err) {
       res.status(400).json({ error: err.message });
@@ -30,8 +35,9 @@ class AuthController {
 
   verifyEmail = asyncHandler(async(req, res) => {
     try {
-      const user = await this.userService.verifyEmail(req.params.token);
-      res.json({ message: "Email verified successfully", user });
+      const { userId, token } = req.params;
+      const {user, message} = await this.authService.verifyEmail(userId, token);
+      res.json({ message, user });
     } catch (err) {
       res.status(400).json({ error: err.message });
     }

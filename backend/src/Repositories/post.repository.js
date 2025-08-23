@@ -6,11 +6,11 @@ class PostRepository {
     return this.model.create(postData);
   }
 
-    async findAll() {
+  async findAll() {
     return this.model.find().sort({ createdAt: -1 }).populate("user", ["-password"]).populate("comments");
   }
 
-    async findByCategory(category) {
+  async findByCategory(category) {
     return this.model.find({ category })
       .sort({ createdAt: -1 })
       .populate("user", ["-password"]);
@@ -26,32 +26,19 @@ class PostRepository {
 
   async findById(id) {
     return this.model.findById(id).populate("user", "username profilePhoto")
-    //.populate("comments");
-    .populate({
-      path: "comments",
-      populate: {
-        path: "user",
-        select: "username profilePhoto"
-      }
-    });
+      //.populate("comments");
+      .populate({
+        path: "comments",
+        populate: {
+          path: "user",
+          select: "username profilePhoto"
+        }
+      });
   }
 
-//   async findAll(filter = {}, skip = 0, limit = 0) {
-//   const query = this.model
-//     .find(filter)
-//     .sort({ createdAt: -1 })
-//     .populate("user", ["-password"]).populate("comments");
-
-//   if (limit > 0) {
-//     query.skip(skip).limit(limit);
-//   }
-
-//   return query;
-// }
-
-async countAll(filter = {}) {
-  return this.model.countDocuments(filter);
-}
+  async countAll(filter = {}) {
+    return this.model.countDocuments(filter);
+  }
 
   async findByTitleAndUser(title, userId) {
     return this.model.findOne({ title, user: userId });

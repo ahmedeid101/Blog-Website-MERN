@@ -54,6 +54,7 @@ export function verifyEmail(userId,token) {
       dispatch(authActions.setIsEmailVerified());
     } catch (error) {
       console.log(error);
+      //dispatch(authActions.setIsEmailVerified(false));
     }
   }
 }

@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: true })); // For form data
 
 //cors policy
 app.use(cors({
-    orugin: "http://localhost:3000"
+    origin: "http://localhost:3000"
 }));
 
 //Routes

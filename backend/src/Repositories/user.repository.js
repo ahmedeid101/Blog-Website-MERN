@@ -5,19 +5,38 @@ class UserRepository {
     this.model = model;
   }
 
-  async findById(id){
-     return this.model.findById(id).select('-password').populate('posts');
+    async create(userData) {
+      const user = new this.model(userData);
+      return user.save();
   }
 
-    async findByEmail(email) {
+   async findUserById(id) {
+    return this.model.findById(id).select('-password').populate('posts');
+  }
+
+  async findById(id) {
+    return this.model.findById(id).select('-password').populate('posts');
+  }
+  async findByEmail(email) {
     return this.model.findOne({ email });
   }
-  
-  async updateUser(userId, updateData){
+
+  async findByVerificationToken(token) {
+    return await this.model.findOne({ verificationToken: token });
+  }
+
+  async verifyUser(userId) {
+    return await this.model.findByIdAndUpdate(userId, {
+      isAccountVerified: true,
+      verificationToken: null
+    }, { new: true });
+  }
+
+  async updateUser(userId, updateData) {
     return this.model.findByIdAndUpdate(
-        userId,
-        updateData,
-        {new: true, runValidators: true}
+      userId,
+      updateData,
+      { new: true, runValidators: true }
     ).select('-password').populate("posts");
   }
 
@@ -37,7 +56,7 @@ class UserRepository {
     return this.model.find().select('-password').populate('posts');
   }
 
-  async countUsers(filter = {}){
+  async countUsers(filter = {}) {
     return this.model.countDocuments(filter);
   }
 

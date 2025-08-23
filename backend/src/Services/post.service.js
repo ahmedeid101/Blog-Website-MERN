@@ -40,27 +40,6 @@ class PostService {
     }
   }
 
-
-//   async getAllPosts(query) {
-//   const { category, page = 1, limit = 3 } = query;
-//   const skip = (page - 1) * limit;
-
-//   const filter = {};
-//   if (category) filter.category = category;
-
-//   const [posts, totalPosts] = await Promise.all([
-//     this.postRepository.findAll(filter, skip, limit),
-//     this.postRepository.countAll(filter),
-//   ]);
-
-//   return {
-//     posts,
-//     totalPosts,
-//     totalPages: Math.ceil(totalPosts / limit),
-//     currentPage: Number(page),
-//   };
-// }
-
   async countPosts(filter = {}) {
     return this.postRepository.countAll(filter);
   }
@@ -98,7 +77,7 @@ class PostService {
     });
   }
 
-    async deletePost(id, user) {
+  async deletePost(id, user) {
     const post = await this.postRepository.findById(id);
     if (!post) throw new ErrorResponse("Post not found", 404);
 

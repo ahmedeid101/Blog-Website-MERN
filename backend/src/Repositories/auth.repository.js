@@ -17,6 +17,13 @@ class AuthRepository {
     const user = new this.model(userData);
     return user.save();
   }
+
+      async verifyUser(userId) {
+    return await this.model.findByIdAndUpdate(userId, {
+      isAccountVerified: true,
+      verificationToken: null
+    }, { new: true });
+  }
 }
 
 module.exports = AuthRepository;

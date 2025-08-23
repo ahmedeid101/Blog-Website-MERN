@@ -19,7 +19,7 @@ const router = express.Router();
 
 // User routes
 router.get("/profile/:id", validateObjectId, getProfile);
-router.put("/profile/:id", authMiddleware(), UpdateProfileValidator.validateUpdateProfile, validateObjectId, updateProfile);
+router.put("/profile/:id", authMiddleware(["admin", "user"]), UpdateProfileValidator.validateUpdateProfile, validateObjectId, updateProfile);
 router.delete("/profile/:id", authMiddleware(), validateObjectId, deleteUserProfile);
 router.post('/profile/upload-photo', authMiddleware(), uploadPhoto, uploadProfilePhoto);
 

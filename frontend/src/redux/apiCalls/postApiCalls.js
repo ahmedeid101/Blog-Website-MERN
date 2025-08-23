@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 //fetch posts pased on page number
 export const fetchPosts = (pageNumber) => async (dispatch) => {
   try {
-    const {data} = await request.get(`/api/posts?page=${pageNumber}`);
+    const { data } = await request.get(`/api/posts?page=${pageNumber}`);
     dispatch(postActions.setPosts(data.data)); // backend should return { data: [...] }
   } catch (err) {
     dispatch(
@@ -31,7 +31,7 @@ export const fetchPost = (postId) => async (dispatch) => {
 //get posts count
 export const getPostsCount = () => async (dispatch) => {
   try {
-    const {data} = await request.get(`/api/posts/count`);
+    const { data } = await request.get(`/api/posts/count`);
     dispatch(postActions.setPostsCount(data.data));
   } catch (err) {
     dispatch(
@@ -44,7 +44,7 @@ export const getPostsCount = () => async (dispatch) => {
 //fetch posts pased on category
 export const fetchPostsCategory = (category) => async (dispatch) => {
   try {
-    const {data} = await request.get(`/api/posts?category=${category}`);
+    const { data } = await request.get(`/api/posts?category=${category}`);
     dispatch(postActions.setPostsCategory(data.data));
   } catch (err) {
     dispatch(
@@ -72,10 +72,10 @@ export const createPost = (newPost) => async (dispatch, getState) => {
     );
 
     if (Array.isArray(error.response?.data?.errors)) {
-        error.response.data.errors.forEach((msg) => toast.error(msg));
-      } else {
-        toast.error(error.response?.data?.error || "Something went wrong");
-      }
+      error.response.data.errors.forEach((msg) => toast.error(msg));
+    } else {
+      toast.error(error.response?.data?.error || "Something went wrong");
+    }
     dispatch(postActions.clearLoading());
   }
 };
@@ -84,7 +84,7 @@ export const createPost = (newPost) => async (dispatch, getState) => {
 export const toggleLike = (userId) => async (dispatch, getState) => {
   dispatch(postActions.getPostsStart());
   try {
-    const {data} = await request.put(`/api/posts/like/${userId}`, {}, {
+    const { data } = await request.put(`/api/posts/like/${userId}`, {}, {
       headers: {
         Authorization: "Bearer " + getState().auth.user.token,
       },
@@ -121,7 +121,7 @@ export const updatePostImage = (newImage, userId) => async (dispatch, getState) 
 export const updatePost = (newPost, userId) => async (dispatch, getState) => {
   dispatch(postActions.getPostsStart());
   try {
-    const {data} = await request.put(`/api/posts/${userId}`, newPost, {
+    const { data } = await request.put(`/api/posts/${userId}`, newPost, {
       headers: {
         Authorization: "Bearer " + getState().auth.user.token,
       },
@@ -138,7 +138,7 @@ export const updatePost = (newPost, userId) => async (dispatch, getState) => {
 export const deletePost = (postId) => async (dispatch, getState) => {
   dispatch(postActions.getPostsStart());
   try {
-    const {data} = await request.delete(`/api/posts/${postId}`, {
+    const { data } = await request.delete(`/api/posts/${postId}`, {
       headers: {
         Authorization: "Bearer " + getState().auth.user.token,
       },

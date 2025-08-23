@@ -17,7 +17,7 @@ class PostController {
       }
 
       const post = await this.postService.createPost(postData);
-      res.status(201).json({ success: true, data: post });
+        res.status(201).json({ success: true, data: post });
     } catch (error) {
       if (postData?.image?.publicId)
         await cloudinary.uploader.destroy(postData.image.publicId);
@@ -36,29 +36,15 @@ class PostController {
   });
 
   getAllPosts = asyncHandler(async (req, res) => {
-  const { page: pageNumber, category } = req.query;
+    const { page: pageNumber, category } = req.query;
 
-  const posts = await this.postService.getAllPosts({
-    pageNumber,
-    category,
+    const posts = await this.postService.getAllPosts({
+      pageNumber,
+      category,
+    });
+
+    res.status(200).json({ success: true, data: posts });
   });
-
-  res.status(200).json({success: true, data:posts});
-});
-
-  // getAllPosts = asyncHandler(async (req, res) => {
-  //   const { posts, totalPosts, totalPages, currentPage } =
-  //     await this.postService.getAllPosts(req.query);
-
-  //   res.status(200).json({
-  //     success: true,
-  //     count: posts.length,
-  //     totalPosts,
-  //     totalPages,
-  //     currentPage,
-  //     data: posts,
-  //   });
-  // });
 
   updatePost = asyncHandler(async (req, res) => {
     // 1. Call service to update the post

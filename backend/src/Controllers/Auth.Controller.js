@@ -22,6 +22,16 @@ class AuthController {
     }
   });
 
+  //login user
+  login = asyncHandler(async (req, res) => {
+    try {
+      const { user, token } = await this.authService.login(req.body);
+      res.status(200).json({ ...user, token });
+    } catch (error) {
+      res.status(400).json({ success: false, error: error.message });
+    }
+  });
+
   verifyEmail = asyncHandler(async (req, res) => {
     try {
       const { userId, token } = req.params;
@@ -32,16 +42,6 @@ class AuthController {
       res.json({ message, user });
     } catch (err) {
       res.status(400).json({ error: err.message });
-    }
-  });
-
-  //login user
-  login = asyncHandler(async (req, res) => {
-    try {
-      const { user, token } = await this.authService.login(req.body);
-      res.status(200).json({ ...user, token });
-    } catch (error) {
-      res.status(400).json({ success: false, error: error.message });
     }
   });
 

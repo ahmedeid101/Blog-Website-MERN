@@ -1,4 +1,3 @@
-// src/redux/slices/postsSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const postsSlice = createSlice({

@@ -100,10 +100,10 @@ class AuthService {
     const user = await User.findById(userId);
     if (!user) throw new ErrorResponse("User not found");
 
-    const hashedPassword = await this.passwordHasher.hash(newPassword);
-    await User.findByIdAndUpdate(userId, { password: hashedPassword });
-    // user.password = await this.passwordHasher.hash(newPassword);
-    // await user.save();
+    // const hashedPassword = await this.passwordHasher.hash(newPassword);
+    // await User.findByIdAndUpdate(userId, { password: hashedPassword });
+    user.password = await this.passwordHasher.hash(newPassword);
+    await user.save();
 
     await this.emailService.deleteToken(token);
     return { message: "Password reset successful" };

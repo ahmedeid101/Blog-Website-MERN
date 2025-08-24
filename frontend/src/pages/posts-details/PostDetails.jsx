@@ -105,8 +105,8 @@ const PostDetails = () => {
         </div>
       </div>
       <p className="post-details-description">
-        {post?.description}
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestias
+        {post?.description } 
+         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestias
         explicabo eveniet tenetur. Illo quidem enim a esse, magni libero. Sint
         delectus laboriosam adipisci magnam, dicta iure sed hic at est.
       </p>

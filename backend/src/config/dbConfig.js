@@ -2,8 +2,8 @@ const mongose = require("mongoose");
 
 module.exports = async () =>{
     try {
-        console.log("MONGO_URI =>", process.env.MONGO_URI); // 🔍 Debug
-        await mongose.connect(process.env.MONGO_URI, {
+        console.log("MONGO_CLOUD_URL =>", process.env.MONGO_CLOUD_URL); // 🔍 Debug
+        await mongose.connect(process.env.MONGO_CLOUD_URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });

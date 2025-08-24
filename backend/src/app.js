@@ -4,6 +4,8 @@ const express = require("express");
 const cors = require('cors');
 const xss = require("xss-clean");
 const rateLimiting = require("express-rate-limit");
+const helmet = require("helmet");
+const hpp = require("hpp");
 
 const authRoutes = require("./Routes/auth.route");
 const userRoutes = require('./Routes/user.routes');
@@ -29,6 +31,8 @@ app.use(rateLimiting({
     windowMs: 10 * 60 * 1000,
     max: 100
 })); //for requst rate limit
+app.use(helmet()); //for Header Security
+app.use(hpp()); //prevent http param pollution
 
 //cors policy
 app.use(cors({

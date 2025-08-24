@@ -1,5 +1,7 @@
 // validators/user/UpdateProfileValidator.js
 const Joi = require("joi");
+const Joi_password = require("joi-password-complexity");
+
 
 class UpdateProfileValidator {
   // Private Joi schema for updating profile
@@ -8,9 +10,7 @@ class UpdateProfileValidator {
       "string.min": "Username must be at least 2 characters",
       "string.max": "Username cannot exceed 100 characters",
     }),
-    email: Joi.string().email().messages({
-      "string.email": "Invalid email format",
-    }),
+    password: Joi_password(),
     bio: Joi.string().max(500).messages({
       "string.max": "Bio cannot exceed 500 characters",
     }),

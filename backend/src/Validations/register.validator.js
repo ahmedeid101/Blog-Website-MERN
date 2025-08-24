@@ -22,11 +22,7 @@ class RegisterValidator {
         "string.empty": "Email is required",
         "string.email": "Invalid email format",
       }),
-    password: Joi_password().required(),//.messages({
-      //"string.min": "Password must be at least 8 characters",
-      //"string.empty": "Password is required",
-    //}),
-    isAdmin: Joi.boolean().default(false),
+    password: Joi_password().required(),
     role: Joi.string().valid("admin", "user").default("user"), 
   });
 

@@ -1,4 +1,5 @@
 const Joi = require("joi");
+const Joi_password = require("joi-password-complexity");
 
 class RegisterValidator {
   static #registerschema = Joi.object({
@@ -21,10 +22,10 @@ class RegisterValidator {
         "string.empty": "Email is required",
         "string.email": "Invalid email format",
       }),
-    password: Joi.string().min(8).required().messages({
-      "string.min": "Password must be at least 8 characters",
-      "string.empty": "Password is required",
-    }),
+    password: Joi_password().required(),//.messages({
+      //"string.min": "Password must be at least 8 characters",
+      //"string.empty": "Password is required",
+    //}),
     isAdmin: Joi.boolean().default(false),
     role: Joi.string().valid("admin", "user").default("user"), 
   });

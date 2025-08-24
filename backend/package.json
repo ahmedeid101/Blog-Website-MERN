@@ -22,11 +22,11 @@
     "dotenv": "^16.6.1",
     "express": "^4.18.2",
     "express-async-handler": "^1.2.0",
-    "express-rate-limit": "^6.7.0",
+    "express-rate-limit": "^6.11.2",
     "helmet": "^8.1.0",
     "hpp": "^0.2.3",
     "joi": "^17.13.3",
-    "joi-password-complexity": "^5.1.0",
+    "joi-password-complexity": "^5.2.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^6.7.2",
     "morgan": "^1.10.0",
@@ -34,9 +34,10 @@
     "nodemailer": "^6.10.1",
     "serve-favicon": "^2.5.1",
     "winston": "^3.17.0",
-    "xss-clean": "^0.1.1"
+    "xss-clean": "^0.1.4"
   },
   "devDependencies": {
+    "@types/hpp": "^0.2.6",
     "nodemon": "^3.1.10"
   }
 }

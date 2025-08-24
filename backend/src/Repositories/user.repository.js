@@ -10,10 +10,6 @@ class UserRepository {
       return user.save();
   }
 
-   async findUserById(id) {
-    return this.model.findById(id).select('-password').populate('posts');
-  }
-
   async findById(id) {
     return this.model.findById(id).select('-password').populate('posts');
   }

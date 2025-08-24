@@ -2,6 +2,8 @@ require("dotenv").config();
 const dbConnect = require("./config/dbConfig");
 const express = require("express");
 const cors = require('cors');
+const xss = require("xss-clean");
+const rateLimiting = require("express-rate-limit");
 
 const authRoutes = require("./Routes/auth.route");
 const userRoutes = require('./Routes/user.routes');
@@ -22,6 +24,11 @@ const app = express();
 app.use(cors());
 app.use(express.json()); // For JSON bodies
 app.use(express.urlencoded({ extended: true })); // For form data
+app.use(xss()); //prevent XSS(Cross Site Scripting) attacks
+app.use(rateLimiting({
+    windowMs: 10 * 60 * 1000,
+    max: 100
+})); //for requst rate limit
 
 //cors policy
 app.use(cors({

@@ -1,4 +1,3 @@
-const { string, required, object, boolean } = require("joi");
 const mongoose = require("mongoose");
 
 //User Schema
@@ -53,7 +52,7 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-    isAccountVerified: {
+  isAccountVerified: {
     type: Boolean,
     default: false
   },

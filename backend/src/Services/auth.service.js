@@ -1,34 +1,18 @@
 // Auth Service (Refactored)
 const crypto = require("crypto");
-const sendEmail = require("../Utils/sendEmail");
 const ErrorResponse = require("../Utils/errorResponse");
 const VerificationToken = require("../Models/VerificationToken");
 const User = require("../Models/User");
 
 class AuthService {
-  constructor(userRepository, passwordHasher, jwtService) {
+  constructor(userRepository, passwordHasher, jwtService, emailService) {
     if (!jwtService?.generateToken) {
       throw new ErrorResponse("Valid JWT service must be provided", 401);
     }
     this.userRepository = userRepository;
     this.passwordHasher = passwordHasher;
     this.jwtService = jwtService;
-  }
-
-  // Generate and save token
-  async #generateVerificationToken(userId) {
-    const token = crypto.randomBytes(32).toString("hex");
-    await new VerificationToken({ userId, token }).save();
-    return token;
-  }
-
-  // Send verification email
-  async #sendVerificationEmail(user, token) {
-    const url = `${process.env.CLIENT_DOMAIN}/users/${user._id}/verify/${token}`;
-    const html = `<h2>Hello ${user.username}</h2>
-                  <p>Please verify your email:</p>
-                  <a href="${url}">Verify</a>`;
-    await sendEmail({ to: user.email, subject: "Verify Your Email", html });
+    this.emailService = emailService;
   }
 
   async register({ email, password, ...rest }) {
@@ -39,9 +23,7 @@ class AuthService {
     const hashedPassword = await this.passwordHasher.hash(password);
     const user = await this.userRepository.create({ ...rest, email, password: hashedPassword });
 
-    const token = await this.#generateVerificationToken(user._id);
-    await this.#sendVerificationEmail(user, token);
-
+    await this.emailService.sendTokenEmail(user, "verify");
     return { user };
   }
 
@@ -50,10 +32,7 @@ class AuthService {
     if (!user) throw new ErrorResponse("Invalid Email", 401);
 
     if (!user.isAccountVerified) {
-      let token = (await VerificationToken.findOne({ userId: user._id }))?.token;
-      if (!token) token = await this.#generateVerificationToken(user._id);
-
-      await this.#sendVerificationEmail(user, token);
+      await this.emailService.sendTokenEmail(user, "verify");
       throw new ErrorResponse("Verification email sent. Please check your inbox.");
     }
 
@@ -79,14 +58,55 @@ class AuthService {
     const user = await User.findById(userId);
     if (!user) throw new ErrorResponse("User not found", 404);
 
-    const validToken = await VerificationToken.findOne({ userId, token });
-    if (!validToken) throw new ErrorResponse("Invalid or expired token", 400);
+    const foundToken = await this.emailService.findToken(token, "reset");
+    if (!foundToken) throw new ErrorResponse("Invalid or expired verify token");
 
     user.isAccountVerified = true;
     await user.save();
-    await VerificationToken.deleteOne({ userId, token });
+    await this.emailService.deleteToken(token)
 
     return { user, message: "Email verified successfully, you can now log in" };
+  }
+
+  // Send reset password email
+  async sendResetPasswordEmail(email) {
+    const user = await this.userRepository.findByEmail(email);
+    if (!user) throw new ErrorResponse("User not found");
+
+    await this.emailService.sendTokenEmail(user, "reset");
+    return { message: "Password reset link sent to your email, Please check your inbox" };
+  }
+
+  async validateResetPasswordLink(userId, token) {
+    const user = await User.findById(userId);
+    if (!user) throw new ErrorResponse("Invalid link", 400);
+
+    const verificationToken = await this.emailService.findToken(token, "reset");
+    if (!verificationToken) throw new ErrorResponse("Invalid link", 400);
+
+    return { message: "Valid url" };
+  }
+
+  // Reset password
+  async resetPassword(userId, token, newPassword) {
+    const foundToken = await this.emailService.findToken(token, "reset");
+    if (!foundToken) throw new ErrorResponse("Invalid or expired reset token");
+
+    // validate userId matches the token's user
+    if (foundToken.userId.toString() !== userId.toString()) {
+      throw new ErrorResponse("Invalid Id");
+    }
+
+    const user = await User.findById(userId);
+    if (!user) throw new ErrorResponse("User not found");
+
+    const hashedPassword = await this.passwordHasher.hash(newPassword);
+    await User.findByIdAndUpdate(userId, { password: hashedPassword });
+    // user.password = await this.passwordHasher.hash(newPassword);
+    // await user.save();
+
+    await this.emailService.deleteToken(token);
+    return { message: "Password reset successful" };
   }
 }
 

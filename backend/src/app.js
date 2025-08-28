@@ -46,6 +46,10 @@ app.use('/api/posts', postRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/categories', categoryRoutes);
 
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok" });
+}); 
+
 // Handle 404
 app.use(notFound);
 

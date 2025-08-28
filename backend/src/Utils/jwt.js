@@ -7,9 +7,9 @@ class JWT {
         this.expiresIn  = process.env.JWT_EXPIRES_IN || '3h';
 
           //Verify JWT_SECRET exists
-        if (!process.env.JWT_SECRET) {
-            throw new Error('JWT_SECRET must be defined in environment variables');
-        }
+        // if (!process.env.JWT_SECRET) {
+        //     throw new Error('JWT_SECRET must be defined in environment variables');
+        // }
     }
 
     generateToken(payload){

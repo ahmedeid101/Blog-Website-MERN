@@ -41,6 +41,7 @@ Blog-Website-MERN/
 │   │   ├── routes/        # Express routes
 │   │   ├── services/      # Email, token handling
 │   │   ├── middlewares/   # Auth middleware, error handling
+│   │   └── utils/         # utils and helper function 
 │   │   └── app.js         # Express entry point
 │   ├── .env               # Env variables (DB_URI, JWT_SECRET, etc.)
 │   ├── package.json       
@@ -55,6 +56,8 @@ Blog-Website-MERN/
 │   │   └── App.js         # Main React entry point       ├── .env 
 │   ├── package.json
 │
+│── nginx/                 # Nginx reverse proxy config
+│── docker-compose.yml
 │── README.md
 
 ⚙️ Installation
@@ -92,6 +95,52 @@ REACT_APP_API_URL=http://localhost:8000/api
 # Run server:
 - npm start
 
+🐳 Running with Docker
+
+## This project is fully containerized using Docker and docker-compose.
+## Both frontend (React) and backend (Express + MongoDB) are orchestrated with Nginx for production-ready deployment.
+
+1️⃣ Prerequisites
+
+* Install Docker
+
+* Install Docker Compose
+
+2️⃣ Clone the Repository
+- git clone https://github.com/ahmedeid101/Blog-Website-MERN.git
+- cd blog-website-mern
+
+3️⃣ Create .env files
+# Already done above
+
+4️⃣ Build & Run with Docker Compose
+- docker-compose up --build -d
+
+# This will:
+
+* Build frontend → static files → served by Nginx
+
+* Start backend → Express server
+
+* Start MongoDB → database
+
+5️⃣ Access the Application
+
+Frontend → http://localhost
+
+Backend API → http://localhost/api
+
+MongoDB → exposed on port 27017 (for development use only)
+
+6️⃣ Managing Containers
+
+* Stop containers:
+- docker-compose down
+
+* View logs:
+- docker-compose logs -f
+
+
 ## 🚀 Features
 
 ### ✅ Completed Features
@@ -104,7 +153,12 @@ REACT_APP_API_URL=http://localhost:8000/api
 - ❤️ **Likes & Reactions** on blogs  
 - 🏷️ **Categories/Tags** for blogs  
 - 👤 **User Profiles & Avatars**  
-- 🛠️ **Admin Dashboard** – manage users and blogs  
+- 🛠️ **Admin Dashboard** – manage users and blogs
+- 🐳 **Dockerized Setup** – run frontend & backend with docker-compose up -d
+- ✅ **Nginx Integration** – production-ready build served via Nginx
+- ✅ **SPA Routing Fix** – React routes (/login, /blogs/:id, etc.) no longer throw 404 on refresh
+- ✅ **Multi-Stage Builds** – optimized Dockerfiles (smaller image sizes)
+- ✅ **Environment Variable Support** – easily configurable .env for both frontend & backend
 
 ---
 
